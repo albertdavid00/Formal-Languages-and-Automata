@@ -1,10 +1,18 @@
+'''
+input:
+stari finale
+nr_stari
+nr_tranzitii
+tranzitii
+'''
+
 cuvant = input()
 f = open("intrare.txt")
-if cuvant == 'λ' or cuvant == '':
+
+L_stari_fin = [int(x) for x in f.readline().split()]
+if (cuvant == '#' or cuvant == '') and 0 in L_stari_fin:
     print("Cuvantul apartine limbajului recunoscut de automat")
 else:
-    L_stari_fin = [int(x) for x in f.readline().split()]
-
     nr_stari = int(f.readline())
     L_stari = []
     for i in range(0, nr_stari):
@@ -20,6 +28,7 @@ else:
 
     y = L_tranzitii[0][0]
     Tranzitii = []
+    # lista de liste de tuple-uri in care retinem pentru fiecare stare in ce stari se duce si cu ce litere
     Lista = []
     for x in L_tranzitii:
         if x[0] != y:
@@ -35,8 +44,8 @@ else:
     last = 1
     coada = [(0,cuvant[0],0)]
     Sol = []
-    while start < last:
-        for x in Tranzitii[coada[start][0]]:
+    while start < last:                 # simulez o coada de forma (stare, litera , index litera cuvant)
+        for x in Tranzitii[coada[start][0]]:               # pt fiecare stare adaug in coada toate starile in care poate merge
             if len(coada[start]) != 1:
                 if x[1] == coada[start][1]:
                     if coada[start][2] < len(cuvant)-1:
@@ -45,7 +54,7 @@ else:
                         coada.append((x[0],))
                     last += 1
             else:
-                Sol.append(coada[start][0])
+                Sol.append(coada[start][0])             # adaug in Sol starile in care se opreste cuvantul
                 break
         start += 1
     ok = False
